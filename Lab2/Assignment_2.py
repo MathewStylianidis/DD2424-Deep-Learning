@@ -96,7 +96,7 @@ class FeedforwardNet():
         tmp = list([d])
         tmp.extend(K) # layers + 1 elements
         self.W = [np.random.normal(mean, s, (tmp[i + 1], tmp[i])) for i in range(self.layers)]
-        self.b = [np.random.normal(mean, s, (tmp[i + 1], 1)) for i in range(self.layers)]
+        self.b = [np.zeros((tmp[i + 1], 1)) for i in range(self.layers)]
 
     def evaluateClassifier(self, X):
         """
@@ -420,6 +420,19 @@ def makePlots(tr_losses, val_losses, tr_accuracies, val_accuracies):
     plt.legend()
     plt.show()
 
+def normalizeInputs(X):
+    """
+    Normalizes inputs so that they have zero mean
+
+    Attributes:
+        X: The matrix to be normalized with each row representing a different
+            input.
+    Returns:
+        A tuple with first the matrix with the same dimensionality as X but
+        normalized and second a vector with the mean vector used for normalization.
+    """
+    means = np.mean(X, axis = 0)
+    return (X - means, means)
 
 def visualizeWeights(network):
     # Visualize learned weights as pictures
@@ -452,6 +465,11 @@ X_val, Y_val, y_val = BatchList[1]
 # Load test data
 X_tst, Y_tst, y_tst = loadBatch(data_directory_path + '/test_batch')
 
+
+# Normalize all data
+X_tr, norm_means = normalizeInputs(X_tr)
+X_val -= norm_means # Normalize validation set
+X_tst -= norm_means # Normalize test set
 #cell 13
 # Visualize an image for debugging reasons
 
@@ -465,10 +483,10 @@ display(X_tr[image_index])
 ## Initialize model parameters
 N = X_tr.shape[0] # Number of samples
 d = X_tr.shape[1] # Input dimensionality
-K = [3, Y_tr.shape[1]] # Output dimensionality
+K = [50, Y_tr.shape[1]] # Output dimensionality
 layers = 2
 mean = 0.0
-standard_deviation = 0.01
+standard_deviation = 0.001
 network_model = FeedforwardNet(d, K, mean, standard_deviation, layers = 2)
 # Checking that the function works on a subset of inputs
 P = network_model.evaluateClassifier(X_tr[:100])
