@@ -11,7 +11,7 @@ def display(image):
     plt.show()
 
 
-data_directory_path = './Datasets/cifar-10-batches-py'
+data_directory_path = '../Datasets/cifar-10-batches-py'
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
