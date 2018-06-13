@@ -2123,7 +2123,7 @@ Rong 2
 Ruan 2
 Sam 2
 Seah 2
-See 2
+See  2
 Seow 2
 Seto 2
 Sha 2
@@ -2144,7 +2144,7 @@ Siu 2
 Song 2
 Sum 2
 Sun 2
-Sze 2
+Sze  2
 Tan 2
 Tang 2
 Tao 2
